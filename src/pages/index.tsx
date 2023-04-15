@@ -32,7 +32,7 @@ function DownloadButton({ input }: any) {
     try {
       const videoLink = input;
       setLoading(true)
-      const response = await axios.get(`http://186.130.43.148:7000/?video=${videoLink}`, { responseType: 'blob' });
+      const response = await axios.get(`https://186.130.43.148:7000/?video=${videoLink}`, { responseType: 'blob' });
 
       // const title = response.headers["content-disposition"].slice(21)
       // console.log(response)
