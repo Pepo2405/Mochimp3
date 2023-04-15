@@ -1,0 +1,10 @@
+{
+  "build": {
+    "env": {
+      "PYTHON_VERSION": "3.9.7"
+    },
+    "scripts": {
+      "build": "apt-get update && apt-get install -y python${PYTHON_VERSION} && npm run build"
+    }
+  }
+}
