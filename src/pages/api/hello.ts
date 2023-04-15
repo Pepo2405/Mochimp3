@@ -91,27 +91,31 @@ const downloadVideo = async (url: string, title: string) => {
 
 
 
-type Data = {
-  name: string
-}
+type Data = any
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
 
-  if (req.query.link) {
-    const videoId = getYoutubeVideoId(req.query.link as any);
-    const videoStream = await fetchVideo(videoId as any);
-    const videoTitle = `${videoStream}`;
-    const videoPath = path.join(__dirname, 'temp', videoTitle + '.mp3');
-    console.log("videotitle ", videoTitle)
-    res.status(200);
-    res.setHeader('Content-Type', 'audio/mp3');
-    res.setHeader('Content-Disposition', `attachment; filename=${videoTitle}.mp3`);
-    fs.createReadStream(videoPath).pipe(res);
-    clearTempFolder()
-  } else {
-    res.status(400).send({ name: 'error' });
+  try {
+
+    if (req.query.link) {
+      const videoId = getYoutubeVideoId(req.query.link as any);
+      const videoStream = await fetchVideo(videoId as any);
+      const videoTitle = `${videoStream}`;
+      const videoPath = path.join(__dirname, 'temp', videoTitle + '.mp3');
+      console.log("videotitle ", videoTitle)
+      res.status(200);
+      res.setHeader('Content-Type', 'audio/mp3');
+      res.setHeader('Content-Disposition', `attachment; filename=${videoTitle}.mp3`);
+      fs.createReadStream(videoPath).pipe(res);
+      clearTempFolder()
+    } else {
+      res.status(400).send({ name: 'error' });
+    }
+  } catch (error: any) {
+    res.status(500).send({ error: error.message })
   }
+
 }
